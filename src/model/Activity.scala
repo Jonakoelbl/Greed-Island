@@ -3,7 +3,7 @@ package model
 import java.util.{Date, Calendar}
 import java.sql.Time
 
-abstract class Activity (aName: String, aResponsible: Person, members: List[Person], financialAmount: Int) {
+abstract class Activity (val aName: String, aResponsible: Person, members: List[Person], val financialAmount: Int) {
   
 	var approved: Boolean = false
 	implicit val filingDate: Date = Calendar.getInstance().getTime()
@@ -13,38 +13,42 @@ abstract class Activity (aName: String, aResponsible: Person, members: List[Pers
 	  approved = true
 	  approvalDate = Calendar.getInstance().getTime()
 	}
+	
+	def isApproved: Boolean = {
+	  approved
+	}
 }
 
 case class Seminary (
-						aName: String, 
+						override val aName: String, 
 						aResponsible: Person,
-						theMembers: List[Person],
-						financialAmount: Int, 
+						members: List[Person],
+						override val financialAmount: Int, 
 						sessions: List[Session]
 					) 
-	extends Activity (aName, aResponsible, theMembers, financialAmount) {
+	extends Activity (aName, aResponsible, members, financialAmount) {
   
 }
 
 case class Project (
-						aName: String,
+						override val aName: String,
 						aResponsible: Person,
-						theMembers: List[Person],
-						financialAmount: Int
+						members: List[Person],
+						override val financialAmount: Int
 					) 
-	extends Activity (aName, aResponsible, theMembers, financialAmount) {
+	extends Activity (aName, aResponsible, members, financialAmount) {
 	
 }
 
 case class Talk (
-					aName: String,
+					override val aName: String,
 					aResponsible: Person,
-					theMembers: List[Person],
-					financialAmount: Int,
+					members: List[Person],
+					override val financialAmount: Int,
 					aDate: Date,
 					fromHour: Time,
 					toHour: Time
 				) 
-	extends Activity (aName, aResponsible, theMembers, financialAmount) {
+	extends Activity (aName, aResponsible, members, financialAmount) {
 
 }
