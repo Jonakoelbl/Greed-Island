@@ -1,6 +1,9 @@
-class Student (aName: String, aLastname: String, anAge: Int) 
+package model
+
+case class Student (aName: String, aLastname: String, anAge: Int, currentCareer: Career, subjects: List[(Subject, Boolean, Int)]) 
 	extends Person (aName, aLastname, anAge) { 
 	//var currentCareer : Career
+  
 	//Subject, Boolean=Assist, Int=Note
 	//var subjects : List[(Subject, Boolean, Int)] //Should not have repeated
 	
