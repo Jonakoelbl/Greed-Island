@@ -1,3 +1,5 @@
+package model
+
 class Group (members: List[Person]) {
 	//var presentedActivities: List[Activity]
 	
