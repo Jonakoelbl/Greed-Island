@@ -10,7 +10,7 @@ class Group (members: List[Person]) {
 	}
 	
 	def nonApprovedTotalAmount : Int ={
-      var value:Int = 0
+      var value: Int = 0
       this.nonApprovedActivities foreach(activity => value += activity.financialAmount)
       value
   	}

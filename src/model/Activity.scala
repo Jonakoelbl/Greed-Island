@@ -17,6 +17,7 @@ abstract class Activity (val aName: String, aResponsible: Person, members: List[
 	def isApproved: Boolean = {
 	  approved
 	}
+	
 }
 
 case class Seminary (
@@ -28,13 +29,17 @@ case class Seminary (
 					) 
 	extends Activity (aName, aResponsible, members, financialAmount) {
   
+  def neededSpace : Int = members length
 }
 
 case class Project (
 						override val aName: String,
 						aResponsible: Person,
 						members: List[Person],
-						override val financialAmount: Int
+						override val financialAmount: Int,
+						description : String,
+						var results : List[Result],
+						var log : List[Experiment]
 					) 
 	extends Activity (aName, aResponsible, members, financialAmount) {
 	
@@ -43,12 +48,33 @@ case class Project (
 case class Talk (
 					override val aName: String,
 					aResponsible: Person,
-					members: List[Person],
+					members: List[Person with Schedule],
+					estimatedPublic: Int,
 					override val financialAmount: Int,
 					aDate: Date,
 					fromHour: Time,
-					toHour: Time
+					toHour: Time 
 				) 
-	extends Activity (aName, aResponsible, members, financialAmount) {
+	extends Activity (aName, aResponsible, members, financialAmount) with Event {
+	
+  def neededSpace : Int = members.length + estimatedPublic
+  
+  implicit def scheduleMembers = {
+    for (m <- members) {
+      this :: m.belongProjects
+    }
+  }
+}
 
+case class Result (aDate: Date, description: String)
+
+case class Session (aDate: Date, fromHour: Time, toHour: Time) extends Event
+
+case class Experiment (aDate: Date, fromHour: Time, toHour: Time, description: String) extends Event
+
+trait Event {
+  def aDate: Date
+  def fromHour: Time
+  def toHour: Time
+//  def description: String
 }
