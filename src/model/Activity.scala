@@ -3,7 +3,7 @@ package model
 import java.util.{Date, Calendar}
 import java.sql.Time
 
-abstract class Activity (val aName: String, aResponsible: Person, members: List[Person], val financialAmount: Int) {
+abstract class Activity () {
   
 	var approved: Boolean = false
 	implicit val filingDate: Date = Calendar.getInstance().getTime()
@@ -18,44 +18,49 @@ abstract class Activity (val aName: String, aResponsible: Person, members: List[
 	  approved
 	}
 	
+	def aName: String
+	def aResponsible: Person
+	def members: List[Person with Schedule]
+	def financialAmount: Int
+	
 }
 
 case class Seminary (
-						override val aName: String, 
+						aName: String, 
 						aResponsible: Person,
-						members: List[Person],
-						override val financialAmount: Int, 
+						members: List[Person with Schedule],
+						financialAmount: Int, 
 						sessions: List[Session]
 					) 
-	extends Activity (aName, aResponsible, members, financialAmount) {
+	extends Activity () {
   
   def neededSpace : Int = members length
 }
 
 case class Project (
-						override val aName: String,
+						aName: String,
 						aResponsible: Person,
-						members: List[Person],
-						override val financialAmount: Int,
+						members: List[Person with Schedule],
+						financialAmount: Int,
 						description : String,
 						var results : List[Result],
 						var log : List[Experiment]
 					) 
-	extends Activity (aName, aResponsible, members, financialAmount) {
+	extends Activity () {
 	
 }
 
 case class Talk (
-					override val aName: String,
+					aName: String,
 					aResponsible: Person,
 					members: List[Person with Schedule],
 					estimatedPublic: Int,
-					override val financialAmount: Int,
+					financialAmount: Int,
 					aDate: Date,
 					fromHour: Time,
 					toHour: Time 
 				) 
-	extends Activity (aName, aResponsible, members, financialAmount) with Event {
+	extends Activity () with Event {
 	
   def neededSpace : Int = members.length + estimatedPublic
   

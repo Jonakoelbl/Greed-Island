@@ -19,6 +19,6 @@ class Group (members: List[Person]) {
       var articles: List[(Activity, Date)] = null
       presentedActivities filter(a => (a.aName contains("article"))) foreach(activity => (activity, activity.approvalDate)::articles)
       articles
-    } 
+    }
 	
 }
