@@ -1,8 +1,5 @@
 package model
 
-import java.sql.Time
-import java.util.Date
-
 abstract class Person (aName: String, aLastname: String, anAge: Int) {
 
 }
@@ -16,6 +13,7 @@ trait Schedule {
     getEvents(belongProjects)
   }
   
+  //Functional approach
   def getEvents (xs: List[Activity]): List[Event] = xs match {
     case Nil => Nil
     case (head: Talk) :: tail => head :: getEvents(tail)

@@ -2,23 +2,20 @@ package model
 
 import java.util.Date
 
-class Group (members: List[Person]) {
-	var presentedActivities: List[Activity] = List()
-	
-	def nonApprovedActivities : List[Activity] = {
-	  presentedActivities filter(activity => (!activity.isApproved)) 
-	}
-	
-	def nonApprovedTotalAmount : Int ={
-      var value: Int = 0
-      this.nonApprovedActivities foreach(activity => value += activity.financialAmount)
-      value
-  	}
-	
-	def publishedArticles : List[(Activity, Date)] = {
-      var articles: List[(Activity, Date)] = null
-      presentedActivities filter(a => (a.aName contains("article"))) foreach(activity => (activity, activity.approvalDate)::articles)
-      articles
-    }
-	
+class Group(members: List[Person]) {
+  var presentedActivities: List[Activity] = List()
+
+  def nonApprovedActivities: List[Activity] = {
+    presentedActivities filter (activity => (!activity.isApproved))
+  }
+
+  def nonApprovedTotalAmount: Int = {
+    this.nonApprovedActivities.foldLeft(0)(_ + _.financialAmount)
+  }
+
+  def publishedArticles: List[(Activity, Date)] = {
+    val presentedActivities = this.presentedActivities filter (a => (a.containsWordsArticle))
+    presentedActivities.foldRight(List[(Activity, Date)]())((a,b)=> (a, a.approvalDate) :: b)
+  }
+
 }

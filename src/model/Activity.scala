@@ -1,5 +1,9 @@
 package model
 
+import java.sql.Time
+import java.util.Calendar
+import java.util.Date
+
 import java.util.{Date, Calendar}
 import java.sql.Time
 
@@ -22,6 +26,8 @@ abstract class Activity () {
 	def aResponsible: Person
 	def members: List[Person with Schedule]
 	def financialAmount: Int
+	
+	def containsWordsArticle : Boolean = aName contains("Article")
 	
 }
 
@@ -47,7 +53,7 @@ case class Project (
 						var log : List[Experiment]
 					) 
 	extends Activity () {
-	
+	  override def containsWordsArticle = results exists(r => r.description.contains("Article"))
 }
 
 case class Talk (
@@ -81,5 +87,5 @@ trait Event {
   def aDate: Date
   def fromHour: Time
   def toHour: Time
-//  def description: String
+//  def description: String //TODO
 }
