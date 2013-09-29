@@ -1,25 +1,34 @@
 package model
 
-class ClassRoom (var resources: List[Resource], val space: Int, val boardSize: Int)
+//TODO
+class ClassroomManagement (val events : List[_ with WithClassRoom]) {
+  var busyClassroom: List[(ClassRoom, _ with WithClassRoom)] = List()
+  
+  def assingClassroom(classrooms: List[ClassRoom]) ={
+    
+  }
+}
 
-class Resource (val aName: String, val size: Int)
+class ClassRoom(var resources: List[Resource], val space: Int)
+
+class Resource(val aName: String)
 
 trait Size {
-  //TODO
+  def size: Int
 }
 
 trait Resources {
-	var resources : List[Resource] = List()
+  var resources: List[Resource] = Nil
 }
 
 trait WithClassRoom extends Resources {
-  def neededSpace : Int
-  
+  def neededSpace: Int
+
   def itFit(room: ClassRoom): Boolean = {
-    room.space >= neededSpace
+    room.space >= neededSpace && resources.forall (r => room.resources.contains(r))
   }
-  
-  def haveEnoughResources(room: ClassRoom) : Boolean = {
-    resources forall(r => room.resources.contains(r) && room.boardSize >= r.size) 
+
+  def haveEnoughResources(room: ClassRoom): Boolean = {
+    resources forall (r => room.resources.contains(r))
   }
 }
